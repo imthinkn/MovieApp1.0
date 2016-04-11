@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +16,13 @@ import com.example.rishabh.movieapp10.Fragments.FragmentOne;
 import com.example.rishabh.movieapp10.Fragments.MoviesFragment;
 import com.example.rishabh.movieapp10.Fragments.TvShowsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentCommunicator {
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    //MovieDetail movieDetailFragment;
+    MoviesFragment moreMovies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container_1, new FragmentOne()).commit();
                         break;
                     case R.id.movies:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_1, new MoviesFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_1, new MoviesFragment()).addToBackStack(null).commit();
                         break;
 
                     case R.id.tvShows:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_1, new TvShowsFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_1, new TvShowsFragment()).addToBackStack(null).commit();
                         break;
 
 
@@ -98,4 +101,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void respond(int a) {
+
+        switch(a) {
+            case 0:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_1, MoviesFragment.newInstance(a)).addToBackStack(null)
+                        .commit();
+                break;
+
+            case 1:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_1, MoviesFragment.newInstance(a)).addToBackStack(null)
+                        .commit();
+                Log.v("Respond", "Respond working fine till here.");
+                break;
+
+            case 2:moreMovies = new MoviesFragment();
+                moreMovies.transferData(a);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container_1, moreMovies).addToBackStack(null)
+                        .commit();
+                break;
+        }
+    }
 }

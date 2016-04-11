@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.rishabh.movieapp10.APICalls.DiscoverRequest;
 import com.example.rishabh.movieapp10.Adapters.CustomAdapterHome;
+import com.example.rishabh.movieapp10.FragmentCommunicator;
 import com.example.rishabh.movieapp10.POJO.POJO_Movies.MoviesDiscover;
 import com.example.rishabh.movieapp10.POJO.POJO_People.PeopleDiscover;
 import com.example.rishabh.movieapp10.POJO.POJO_Tv.TvDiscover;
@@ -36,7 +38,44 @@ public class HomeFragment extends Fragment {
     private RecyclerView rv2;
     private RecyclerView rv3;
     private Button bv1;
+    private Button bv2;
+    private Button bv3;
+    FragmentCommunicator comm;
     //private RecyclerView rV4;
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        comm = (FragmentCommunicator) getActivity();
+        bv1 = (Button) getActivity().findViewById(R.id.bv1);
+        bv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Button", "Button working fine till here.");
+                comm.respond(0);
+            }
+        });
+
+        bv2 = (Button) getActivity().findViewById(R.id.bv1);
+        bv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("efgh", "Button working fine till here.");
+                comm.respond(1);
+            }
+        });
+
+        bv3 = (Button) getActivity().findViewById(R.id.bv1);
+        bv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("jklm", "Button working fine till here.");
+                comm.respond(0);
+            }
+        });
+    }
 
 
     @Nullable
@@ -48,23 +87,10 @@ public class HomeFragment extends Fragment {
         rv1 = (RecyclerView) rootView.findViewById(R.id.rv1);
         rv2 = (RecyclerView) rootView.findViewById(R.id.rv2);
         rv3 = (RecyclerView) rootView.findViewById(R.id.rv3);
-        bv1 = (Button)rootView.findViewById(R.id.bv1);
-
-        bv1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getChildFragmentManager().beginTransaction()
-                        .replace(R.id.container_2, MovieDetail.newInstance("Blue"))
-                        .addToBackStack("HomeFragment")
-                        .commit();
-            }
-        });
+        //bv1 = (Button)rootView.findViewById(R.id.bv1);
 
         return rootView;
     }
-
-    /*(R.id.container_2, MovieDetail.newInstance("Blue")).commit();
-            }*/
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -94,7 +120,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateHome() {
-        //new FetchMoviesTask(0).execute("");
         FetchMoviesTask(0);
         FetchMoviesTask(1);
         FetchMoviesTask(2);

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,12 +29,17 @@ import retrofit.client.Response;
 
 public class MoviesFragment extends Fragment {
 
+    static int counter;
     private CustomAdapterHome adapter = null;
+    TextView tv;
     String BaseUrl = "http://api.themoviedb.org";
-
     private RecyclerView rv1;
 
-
+    public static MoviesFragment newInstance(int a) {
+        MoviesFragment fragment = new MoviesFragment();
+        counter = a;
+        return fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,13 +49,15 @@ public class MoviesFragment extends Fragment {
         Button btn1 = (Button) rootView.findViewById(R.id.popular_movies);
         Button btn2 = (Button) rootView.findViewById(R.id.top_rated);
         Button btn3 = (Button) rootView.findViewById(R.id.upcoming);
-        final TextView tv = (TextView) rootView.findViewById(R.id.recycler_header);
+        tv = (TextView) rootView.findViewById(R.id.recycler_header);
+
+        updateHome(1);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateHome(0);
                 tv.setText("POPULAR MOVIES");
+                transferData(0);
 
             }
         });
@@ -57,21 +65,36 @@ public class MoviesFragment extends Fragment {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateHome(1);
                 tv.setText("TOP RATED");
+                transferData(1);
             }
         });
 
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateHome(2);
                 tv.setText("UPCOMING MOVIES");
+                transferData(2);
             }
         });
 
 
         return rootView;
+    }
+
+    public void transferData(int a){
+
+        switch(a) {
+            case 0:
+                updateHome(0);
+                break;
+            case 1: updateHome(1);
+                Log.v("switch", "Data coming to switch");
+                break;
+            case 2:updateHome(2);
+
+        }
+
     }
 
     @Override
@@ -93,12 +116,21 @@ public class MoviesFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
-
-        updateHome(0);
-    }
+        switch(counter) {
+            case 0:
+                updateHome(0);
+                break;
+            case 1:Log.v("ONSTAT","ONSTAT working case 1");
+                updateHome(1);
+                break;
+            case 2: updateHome(2);
+                break;
+                default: updateHome(0);
+        }
+    }*/
 
     private void updateHome(int a) {
 
@@ -177,5 +209,6 @@ public class MoviesFragment extends Fragment {
         }
 
     }
+
 
 }

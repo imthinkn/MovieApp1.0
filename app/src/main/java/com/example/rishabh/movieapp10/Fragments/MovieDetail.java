@@ -12,21 +12,28 @@ import com.example.rishabh.movieapp10.R;
 
 public class MovieDetail extends Fragment {
 
+    String string;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.movie_detail, container, false);
         TextView tv = (TextView)v.findViewById(R.id.tv);
-        String s = getArguments().getString("BlueColor");
-        tv.setText(s);
+        //String s = getArguments().getString("BlueColor");
+        tv.setText(string);
         return v;
     }
 
-    public static MovieDetail newInstance(String s){
+    /*public static MovieDetail newInstance(String s){
         MovieDetail fragment = new MovieDetail();
         Bundle bundle = new Bundle();
         bundle.putString("BlueColor", s);
         fragment.setArguments(bundle);
         return fragment;
+    }*/
+
+    public void setString(String s){
+        string = s;
+
     }
 }
